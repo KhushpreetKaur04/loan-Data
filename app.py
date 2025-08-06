@@ -59,7 +59,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1605902711622-cfb43c44367e");
+        background-image: url("C:\Users\Jaspreet Singh\Downloads.CRDOWNLOAD File (.crdownload).jpg");
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
@@ -171,5 +171,6 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
