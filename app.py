@@ -59,14 +59,14 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://www.freepik.com/free-vector/futuristic-digital-rupee-money-concept-background_34426968.htm#fromView=keyword&page=1&position=28&uuid=1fe0b7eb-371b-4847-a8f1-7f76aae1f01c&query=Banking+Background.png");
+        background-image: url("");
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
     }
     .highlight-box {
-        padding: 1rem;
+        padding: 1rem;https://www.freepik.com/free-vector/futuristic-digital-rupee-money-concept-background_34426968.htm#fromView=keyword&page=1&position=28&uuid=1fe0b7eb-371b-4847-a8f1-7f76aae1f01c&query=Banking+Background.jpg")
         background-color: rgba(255, 255, 255, 0.8);
         border-radius: 12px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -171,6 +171,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
