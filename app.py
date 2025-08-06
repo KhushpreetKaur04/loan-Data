@@ -75,7 +75,7 @@ st.pyplot(fig1)
 # -----------------------------
 st.subheader("📈 Total Income vs Loan Amount")
 total_income = applicant_income + coapplicant_income
-loan_amount_full = loan_amount * 1000
+loan_amount_full = loan_amount 
 
 fig2, ax2 = plt.subplots()
 bars2 = ax2.bar(['Total Income', 'Loan Amount'], [total_income, loan_amount_full], color=['gold', 'salmon'])
@@ -141,4 +141,5 @@ st.download_button(
     file_name="loan_prediction_report.pdf",
     mime="application/pdf"
 )
+
 
