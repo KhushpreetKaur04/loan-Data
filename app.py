@@ -57,7 +57,7 @@ from reportlab.pdfgen import canvas
 # 1. Bar Chart: Applicant, Coapplicant, Loan
 st.subheader("💹 Income vs Loan Amount")
 
-loan_amount_actual = loan_amount * 1000
+loan_amount_actual = loan_amount * 100
 categories = ['Applicant Income', 'Coapplicant Income', 'Loan Amount']
 values = [applicant_income, coapplicant_income, loan_amount_actual]
 
@@ -125,3 +125,4 @@ st.download_button(
     file_name="loan_prediction_report.pdf",
     mime="application/pdf"
 )
+
