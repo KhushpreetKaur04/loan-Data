@@ -13,7 +13,7 @@ def set_bg():
         f"""
         <style>
         .stApp {{
-            background-image: url("https://images.pexels.com/photos/4386436/pexels-photo-4386436.jpeg");
+            background-image: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fbanking-technology-background&psig=AOvVaw1GELsfzpyWJDBxoiIOW7qN&ust=1754589768693000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKifn5Hi9o4DFQAAAAAdAAAAABAE");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -139,6 +139,7 @@ if st.sidebar.button("Predict Loan Status"):
         file_name="Loan_Prediction_Report.pdf",
         mime="application/pdf"
     )
+
 
 
 
