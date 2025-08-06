@@ -51,3 +51,76 @@ if st.sidebar.button("Predict Loan Status"):
     st.success(result if prediction == 1 else "")
     st.error(result if prediction == 0 else "")
 
+
+# ----------------- Visual Section -----------------
+
+# 🎨 Set clean banking-themed background
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("https://images.unsplash.com/photo-1605902711622-cfb43c44367e");
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .highlight-box {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Convert numerical inputs for display
+gender_text = "Male" if gender == 1 else "Female"
+region_text = ["Rural", "Semiurban", "Urban"][property_area]
+
+# 📦 Display summary boxes: Gender, Dependents, Region
+st.markdown("### 📌 Applicant Summary")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown(f'<div class="highlight-box">Gender<br>{gender_text}</div>', unsafe_allow_html=True)
+with col2:
+    st.markdown(f'<div class="highlight-box">Dependents<br>{dependents}</div>', unsafe_allow_html=True)
+with col3:
+    st.markdown(f'<div class="highlight-box">Region<br>{region_text}</div>', unsafe_allow_html=True)
+
+# 📊 Income vs Loan Amount Chart
+st.markdown("### 💰 Income vs Loan Amount")
+
+loan_amount_actual = loan_amount * 1000  # convert to actual ₹
+categories = ['Applicant Income', 'Coapplicant Income', 'Loan Amount']
+values = [applicant_income, coapplicant_income, loan_amount_actual]
+
+fig, ax = plt.subplots()
+bars = ax.bar(categories, values, color=['#4a90e2', '#50e3c2', '#f5a623'])
+ax.set_ylabel("Amount (in ₹)")
+ax.set_title("Applicant & Co-applicant Income vs Loan Amount")
+
+for bar in bars:
+    height = bar.get_height()
+    ax.annotate(f'₹{int(height)}', xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 5), textcoords="offset points",
+                ha='center', va='bottom')
+
+st.pyplot(fig)
+
+# ✅ Loan Status Visual
+if 'prediction' in locals():
+    st.markdown("### 📋 Loan Approval Visual")
+    if prediction == 1:
+        st.success("Congratulations! Your loan is likely to be approved.")
+        st.image("https://cdn-icons-png.flaticon.com/512/845/845646.png", width=120)  # tick icon
+    else:
+        st.error("Sorry, your loan may not be approved.")
+        st.image("https://cdn-icons-png.flaticon.com/512/463/463612.png", width=120)  # cross icon
