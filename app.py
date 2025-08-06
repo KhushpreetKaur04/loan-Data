@@ -49,4 +49,28 @@ if st.sidebar.button("Predict Loan Status"):
     st.subheader("Prediction Result:")
     st.success(result if prediction == 1 else "")
     st.error(result if prediction == 0 else "")
+# Visualization: Income vs Loan Amount
+import matplotlib.pyplot as plt
+
+# Prepare values
+loan_amount_actual = loan_amount * 1000  # Assuming 'in thousands'
+categories = ['Applicant Income', 'Coapplicant Income', 'Loan Amount']
+values = [applicant_income, coapplicant_income, loan_amount_actual]
+
+# Create bar chart
+fig, ax = plt.subplots()
+bars = ax.bar(categories, values, color=['skyblue', 'lightgreen', 'salmon'])
+ax.set_ylabel("Amount (in ₹)")
+ax.set_title("Income vs Loan Amount")
+
+# Annotate values on bars
+for bar in bars:
+    height = bar.get_height()
+    ax.annotate(f'{int(height)}',
+                xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 3),  # offset
+                textcoords="offset points",
+                ha='center', va='bottom')
+
+st.pyplot(fig)
 
