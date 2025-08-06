@@ -50,97 +50,80 @@ if st.sidebar.button("Predict Loan Status"):
     st.success(result if prediction == 1 else "")
     st.error(result if prediction == 0 else "")
 
-
-
-
 import matplotlib.pyplot as plt
+import seaborn as sns
 from io import BytesIO
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
+import base64
 
-# -----------------------------
-# Chart 1: Applicant vs Coapplicant Income
-# -----------------------------
-st.subheader("📊 Applicant vs Coapplicant Income")
+# ----- Custom Background -----
+def set_bg_from_url():
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("https://images.unsplash.com/photo-1620138548241-dfeee58b1fbf"); 
+            background-size: cover;
+            background-position: center;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+set_bg_from_url()
+
+# ----- Charts Section -----
+st.header("📊 Applicant Financial Overview")
+
+# Chart 1: Bar chart - Applicant vs Coapplicant Income
 fig1, ax1 = plt.subplots()
-bars1 = ax1.bar(['Applicant', 'Coapplicant'], [applicant_income, coapplicant_income], color=['skyblue', 'lightgreen'])
+sns.barplot(x=["Applicant", "Coapplicant"], y=[applicant_income, coapplicant_income], palette="Blues_d", ax=ax1)
 ax1.set_ylabel("Income (₹)")
 ax1.set_title("Applicant vs Coapplicant Income")
-for bar in bars1:
-    ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f'{int(bar.get_height())}', ha='center', va='bottom')
 st.pyplot(fig1)
 
-# -----------------------------
-# Chart 2: Total Income vs Loan Amount
-# -----------------------------
-st.subheader("📈 Total Income vs Loan Amount")
-total_income = applicant_income + coapplicant_income
-loan_amount_full = loan_amount 
-
+# Chart 2: Scatter plot - Income vs Loan Amount
 fig2, ax2 = plt.subplots()
-bars2 = ax2.bar(['Total Income', 'Loan Amount'], [total_income, loan_amount_full], color=['gold', 'salmon'])
-ax2.set_ylabel("Amount (₹)")
+total_income = applicant_income + coapplicant_income
+ax2.scatter(total_income, loan_amount, color='green')
+ax2.set_xlabel("Total Income (₹)")
+ax2.set_ylabel("Loan Amount (₹)")
 ax2.set_title("Total Income vs Loan Amount")
-for bar in bars2:
-    ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f'{int(bar.get_height())}', ha='center', va='bottom')
 st.pyplot(fig2)
 
-# -----------------------------
-# Chart 3: Loan Approval vs Rejection (Prediction Visualization)
-# -----------------------------
-st.subheader("🔍 Loan Status Prediction")
-labels = ['Approved', 'Rejected']
-sizes = [1, 0] if prediction == 1 else [0, 1]
-colors = ['green', 'red']
-
-fig3, ax3 = plt.subplots()
-ax3.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors, startangle=90)
-ax3.axis('equal')
-st.pyplot(fig3)
-
-# -----------------------------
-# PDF Download Section
-# -----------------------------
-st.subheader("📄 Download Loan Prediction Report")
-
-def generate_pdf():
+# ----- PDF Generation -----
+def generate_pdf(prediction_text):
     buffer = BytesIO()
-    c = canvas.Canvas(buffer, pagesize=letter)
-    text = c.beginText(40, 750)
-    text.setFont("Helvetica", 12)
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = []
 
-    text.textLine("🏦 Loan Prediction Report")
-    text.textLine("--------------------------------------")
-    text.textLine(f"Gender: {'Male' if gender == 1 else 'Female'}")
-    text.textLine(f"Married: {'Yes' if married == 1 else 'No'}")
-    text.textLine(f"Dependents: {dependents}")
-    text.textLine(f"Education: {'Graduate' if education == 1 else 'Not Graduate'}")
-    text.textLine(f"Self Employed: {'Yes' if self_employed == 1 else 'No'}")
-    text.textLine(f"Applicant Income: ₹{applicant_income}")
-    text.textLine(f"Coapplicant Income: ₹{coapplicant_income}")
-    text.textLine(f"Total Income: ₹{total_income}")
-    text.textLine(f"Loan Amount: ₹{loan_amount_full}")
-    text.textLine(f"Loan Term: {loan_term} days")
-    text.textLine(f"Credit History: {'Good' if credit_history == 1 else 'Poor'}")
-    area_text = {2: "Urban", 1: "Semiurban", 0: "Rural"}[property_area]
-    text.textLine(f"Property Area: {area_text}")
-    text.textLine("--------------------------------------")
-    text.textLine(f"Loan Prediction Result: {result}")
+    elements.append(Paragraph("🏦 Final Loan Prediction Report", styles["Title"]))
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph(f"Prediction Result: {prediction_text}", styles["Normal"]))
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph(f"Applicant Income: ₹{applicant_income}", styles["Normal"]))
+    elements.append(Paragraph(f"Coapplicant Income: ₹{coapplicant_income}", styles["Normal"]))
+    elements.append(Paragraph(f"Loan Amount: ₹{loan_amount}", styles["Normal"]))
+    elements.append(Paragraph(f"Loan Term: {loan_term} days", styles["Normal"]))
+    elements.append(Paragraph(f"Credit History: {credit_history}", styles["Normal"]))
     
-    c.drawText(text)
-    c.showPage()
-    c.save()
+    doc.build(elements)
     buffer.seek(0)
     return buffer
 
-pdf_file = generate_pdf()
-
-st.download_button(
-    label="📥 Download PDF Report",
-    data=pdf_file,
-    file_name="loan_prediction_report.pdf",
-    mime="application/pdf"
-)
+if 'prediction' in locals():
+    pdf_buffer = generate_pdf(result)
+    b64_pdf = base64.b64encode(pdf_buffer.read()).decode('utf-8')
+    st.download_button(
+        label="📄 Download Final Loan Prediction Report (PDF)",
+        data=base64.b64decode(b64_pdf),
+        file_name="Loan_Prediction_Report.pdf",
+        mime="application/pdf"
+    )
 
 
 
