@@ -119,3 +119,4 @@ if st.sidebar.button("Predict Loan Status"):
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
