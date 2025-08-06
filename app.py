@@ -59,7 +59,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://www.freepik.com/free-vector/futuristic-digital-rupee-money-concept-background_34426968.htm#fromView=keyword&page=1&position=28&uuid=1fe0b7eb-371b-4847-a8f1-7f76aae1f01c&query=Banking+Background");
+        background-image: url("https://www.freepik.com/free-vector/futuristic-digital-rupee-money-concept-background_34426968.htm#fromView=keyword&page=1&position=28&uuid=1fe0b7eb-371b-4847-a8f1-7f76aae1f01c&query=Banking+Background.png");
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
@@ -115,7 +115,7 @@ for bar in bars:
 
 st.pyplot(fig)
 
-# ✅ Loan Status Visual
+# ✅ Loan Status 
 if 'prediction' in locals():
     st.markdown("### 📋 Loan Approval Visual")
     if prediction == 1:
@@ -171,6 +171,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
