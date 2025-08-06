@@ -49,3 +49,4 @@ if st.sidebar.button("Predict Loan Status"):
     st.subheader("Prediction Result:")
     st.success(result if prediction == 1 else "")
     st.error(result if prediction == 0 else "")
+
