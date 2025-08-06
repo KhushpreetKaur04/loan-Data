@@ -49,28 +49,79 @@ if st.sidebar.button("Predict Loan Status"):
     st.subheader("Prediction Result:")
     st.success(result if prediction == 1 else "")
     st.error(result if prediction == 0 else "")
-# Visualization: Income vs Loan Amount
 import matplotlib.pyplot as plt
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
-# Prepare values
-loan_amount_actual = loan_amount * 1000  # Assuming 'in thousands'
+# 1. Bar Chart: Applicant, Coapplicant, Loan
+st.subheader("💹 Income vs Loan Amount")
+
+loan_amount_actual = loan_amount * 1000
 categories = ['Applicant Income', 'Coapplicant Income', 'Loan Amount']
 values = [applicant_income, coapplicant_income, loan_amount_actual]
 
-# Create bar chart
-fig, ax = plt.subplots()
-bars = ax.bar(categories, values, color=['skyblue', 'lightgreen', 'salmon'])
-ax.set_ylabel("Amount (in ₹)")
-ax.set_title("Income vs Loan Amount")
-
-# Annotate values on bars
+fig1, ax1 = plt.subplots()
+bars = ax1.bar(categories, values, color=['skyblue', 'lightgreen', 'salmon'])
+ax1.set_ylabel("Amount (₹)")
+ax1.set_title("Income vs Loan Amount")
 for bar in bars:
-    height = bar.get_height()
-    ax.annotate(f'{int(height)}',
-                xy=(bar.get_x() + bar.get_width() / 2, height),
-                xytext=(0, 3),  # offset
-                textcoords="offset points",
-                ha='center', va='bottom')
+    ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), f'{int(bar.get_height())}',
+             ha='center', va='bottom')
+st.pyplot(fig1)
 
-st.pyplot(fig)
+# 2. Pie Chart: Applicant vs Coapplicant Income
+st.subheader("📈 Income Contribution Pie Chart")
+income_parts = [applicant_income, coapplicant_income]
+labels = ['Applicant', 'Coapplicant']
+fig2, ax2 = plt.subplots()
+ax2.pie(income_parts, labels=labels, autopct='%1.1f%%', colors=['skyblue', 'lightgreen'])
+ax2.axis('equal')
+st.pyplot(fig2)
 
+# 3. Horizontal Bar Chart: Contribution
+st.subheader("📊 Income Contribution Comparison")
+fig3, ax3 = plt.subplots()
+ax3.barh(['Applicant', 'Coapplicant'], [applicant_income, coapplicant_income], color=['skyblue', 'lightgreen'])
+ax3.set_xlabel("Income Amount (₹)")
+st.pyplot(fig3)
+
+# 4. Downloadable PDF Report
+st.subheader("📄 Download Loan Prediction Report")
+
+def generate_pdf():
+    buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    text = c.beginText(40, 750)
+    text.setFont("Helvetica", 12)
+
+    text.textLine("Loan Prediction Report")
+    text.textLine("----------------------------")
+    text.textLine(f"Gender: {'Male' if gender == 1 else 'Female'}")
+    text.textLine(f"Married: {'Yes' if married == 1 else 'No'}")
+    text.textLine(f"Dependents: {dependents}")
+    text.textLine(f"Education: {'Graduate' if education == 1 else 'Not Graduate'}")
+    text.textLine(f"Self Employed: {'Yes' if self_employed == 1 else 'No'}")
+    text.textLine(f"Applicant Income: ₹{applicant_income}")
+    text.textLine(f"Coapplicant Income: ₹{coapplicant_income}")
+    text.textLine(f"Loan Amount: ₹{loan_amount_actual}")
+    text.textLine(f"Loan Term: {loan_term} days")
+    text.textLine(f"Credit History: {'Good' if credit_history == 1 else 'Poor'}")
+    text.textLine(f"Property Area: {['Rural', 'Semiurban', 'Urban'][property_area]}")
+    text.textLine("----------------------------")
+    text.textLine(f"Prediction: {result}")
+    
+    c.drawText(text)
+    c.showPage()
+    c.save()
+    buffer.seek(0)
+    return buffer
+
+pdf_buffer = generate_pdf()
+
+st.download_button(
+    label="📥 Download PDF Report",
+    data=pdf_buffer,
+    file_name="loan_prediction_report.pdf",
+    mime="application/pdf"
+)
