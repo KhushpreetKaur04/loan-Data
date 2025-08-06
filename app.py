@@ -20,7 +20,7 @@ education = st.sidebar.selectbox("Education", ["Graduate", "Not Graduate"])
 self_employed = st.sidebar.selectbox("Self Employed", ["Yes", "No"])
 applicant_income = st.sidebar.number_input("Applicant Income", min_value=0)
 coapplicant_income = st.sidebar.number_input("Coapplicant Income", min_value=0)
-loan_amount = st.sidebar.number_input("Loan Amount (in thousands)", min_value=0)
+loan_amount = st.sidebar.number_input("Loan Amount (₹)", min_value=0)
 loan_term = st.sidebar.selectbox("Loan Term (in days)", [360, 180, 240, 300, 120])
 credit_history = st.sidebar.selectbox("Credit History", [1, 0])
 property_area = st.sidebar.selectbox("Property Area", ["Urban", "Semiurban", "Rural"])
@@ -141,5 +141,6 @@ st.download_button(
     file_name="loan_prediction_report.pdf",
     mime="application/pdf"
 )
+
 
 
