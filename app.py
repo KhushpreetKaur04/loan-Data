@@ -98,7 +98,7 @@ with col3:
 # 📊 Income vs Loan Amount Chart
 st.markdown("### 💰 Income vs Loan Amount")
 
-loan_amount_actual = loan_amount * 1000  # convert to actual ₹
+loan_amount_actual = loan_amount   # convert to actual ₹
 categories = ['Applicant Income', 'Coapplicant Income', 'Loan Amount']
 values = [applicant_income, coapplicant_income, loan_amount_actual]
 
@@ -124,3 +124,52 @@ if 'prediction' in locals():
     else:
         st.error("Sorry, your loan may not be approved.")
         st.image("https://cdn-icons-png.flaticon.com/512/463/463612.png", width=120)  # cross icon
+
+from io import BytesIO
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image as RLImage
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+import base64
+import os
+
+# 📥 Generate PDF report after prediction
+if 'prediction' in locals():
+    st.markdown("---")
+    st.markdown("### 📄 Download Prediction Report")
+
+    def generate_pdf():
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        elements = []
+
+        # Title
+        elements.append(Paragraph("🏦 Loan Approval Prediction Report", styles['Title']))
+        elements.append(Spacer(1, 12))
+
+        # Details
+        elements.append(Paragraph(f"<b>Prediction:</b> {'Loan Approved ✅' if prediction == 1 else 'Loan Rejected ❌'}", styles['Normal']))
+        elements.append(Spacer(1, 8))
+        elements.append(Paragraph(f"<b>Gender:</b> {gender_text}", styles['Normal']))
+        elements.append(Paragraph(f"<b>Dependents:</b> {dependents}", styles['Normal']))
+        elements.append(Paragraph(f"<b>Region:</b> {region_text}", styles['Normal']))
+        elements.append(Paragraph(f"<b>Applicant Income:</b> ₹{applicant_income}", styles['Normal']))
+        elements.append(Paragraph(f"<b>Coapplicant Income:</b> ₹{coapplicant_income}", styles['Normal']))
+        elements.append(Paragraph(f"<b>Loan Amount:</b> ₹{loan_amount_actual}", styles['Normal']))
+        elements.append(Spacer(1, 12))
+
+        # Save PDF
+        doc.build(elements)
+        buffer.seek(0)
+        return buffer
+
+    pdf_buffer = generate_pdf()
+    st.download_button(
+        label="📥 Download PDF Report",
+        data=pdf_buffer,
+        file_name="loan_prediction_report.pdf",
+        mime="application/pdf"
+    )
+
+
