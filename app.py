@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 import pandas as pd 
+import matplotlib.pyplot as plt
 
 # Load trained model and scaler
 model = joblib.load('model.pkl')
@@ -51,9 +52,6 @@ if st.sidebar.button("Predict Loan Status"):
     st.error(result if prediction == 0 else "")
 
 # Visualization: Income vs Loan Amount
-import matplotlib.pyplot as plt
-
-# Prepare values
 loan_amount_actual = loan_amount * 1000  # Assuming 'in thousands'
 categories = ['Applicant Income', 'Coapplicant Income', 'Loan Amount']
 values = [applicant_income, coapplicant_income, loan_amount_actual]
@@ -74,3 +72,19 @@ for bar in bars:
                 ha='center', va='bottom')
 
 st.pyplot(fig)
+
+# 🖼️ Background image CSS injection (add this below your main code)
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("https://images.app.goo.gl/KYoYrEwuBKVvYJQh6");
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
