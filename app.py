@@ -59,7 +59,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("C:\Users\Jaspreet Singh\Downloads.CRDOWNLOAD File (.crdownload).jpg");
+        background-image: url("https://www.freepik.com/free-vector/futuristic-digital-rupee-money-concept-background_34426968.htm#fromView=keyword&page=1&position=28&uuid=1fe0b7eb-371b-4847-a8f1-7f76aae1f01c&query=Banking+Background");
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
@@ -171,6 +171,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
