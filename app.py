@@ -123,7 +123,98 @@ if 'prediction' in locals():
         data=base64.b64decode(b64_pdf),
         file_name="Loan_Prediction_Report.pdf",
         mime="application/pdf"
+    ) 
+
+
+# ======= Enhanced Visuals and Report =======
+
+    # Background Image
+    def set_bg_from_url():
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background-image: url("https://img.freepik.com/free-vector/gradient-finance-background_23-2149110174.jpg");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    set_bg_from_url()
+
+    # Charts Section
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from io import BytesIO
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.pagesizes import letter
+    import base64
+
+    st.markdown("## 📊 Financial Overview")
+
+    # Chart 1: Income Comparison
+    sns.set_style("whitegrid")
+    sns.set_palette("pastel")
+    fig1, ax1 = plt.subplots(figsize=(6, 3))
+    df_income = pd.DataFrame({
+        'Type': ['Applicant Income', 'Coapplicant Income'],
+        'Amount': [applicant_income, coapplicant_income]
+    })
+    sns.barplot(data=df_income, x='Amount', y='Type', ax=ax1)
+    ax1.set_title("Income Comparison", fontsize=14)
+    ax1.set_xlabel("Income (₹)")
+    ax1.set_ylabel("")
+    st.pyplot(fig1)
+
+    # Chart 2: Total Income vs Loan Amount
+    fig2, ax2 = plt.subplots(figsize=(6, 4))
+    total_income = applicant_income + coapplicant_income
+    ax2.scatter(total_income, loan_amount, s=120, color="#2a9d8f", edgecolor="black")
+    ax2.set_title("Total Income vs Loan Amount", fontsize=14)
+    ax2.set_xlabel("Total Income (₹)")
+    ax2.set_ylabel("Loan Amount (₹)")
+    ax2.grid(True, linestyle='--', alpha=0.6)
+    st.pyplot(fig2)
+
+    # PDF Report
+    def generate_pdf(prediction_text):
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        elements = []
+
+        elements.append(Paragraph("🏦 Final Loan Prediction Report", styles["Title"]))
+        elements.append(Spacer(1, 12))
+        elements.append(Paragraph(f"Prediction Result: {prediction_text}", styles["Heading2"]))
+        elements.append(Spacer(1, 12))
+
+        elements.append(Paragraph(f"👤 Applicant Income: ₹{applicant_income}", styles["Normal"]))
+        elements.append(Paragraph(f"👥 Coapplicant Income: ₹{coapplicant_income}", styles["Normal"]))
+        elements.append(Paragraph(f"💰 Loan Amount: ₹{loan_amount}", styles["Normal"]))
+        elements.append(Paragraph(f"📆 Loan Term: {loan_term} days", styles["Normal"]))
+        elements.append(Paragraph(f"📊 Credit History: {'Good' if credit_history == 1 else 'Bad'}", styles["Normal"]))
+        elements.append(Spacer(1, 12))
+
+        elements.append(Paragraph("📌 Summary:", styles["Heading3"]))
+        elements.append(Paragraph("This report presents a prediction based on the applicant's financial profile. Please consider this result in conjunction with verified documentation and manual review.", styles["Normal"]))
+
+        doc.build(elements)
+        buffer.seek(0)
+        return buffer
+
+    pdf_buffer = generate_pdf(result)
+    b64_pdf = base64.b64encode(pdf_buffer.read()).decode('utf-8')
+    st.download_button(
+        label="📄 Download Final Loan Prediction Report (PDF)",
+        data=base64.b64decode(b64_pdf),
+        file_name="Loan_Prediction_Report.pdf",
+        mime="application/pdf"
     )
+
 
 
 
