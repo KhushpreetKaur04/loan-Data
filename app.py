@@ -78,7 +78,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.app.goo.gl/KYoYrEwuBKVvYJQh6");
+        background-image: url("https://images.app.goo.gl/KYoYrEwuBKVvYJQh6.jpg");
         background-attachment: fixed;
         background-size: cover;
         background-repeat: no-repeat;
@@ -88,3 +88,4 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
