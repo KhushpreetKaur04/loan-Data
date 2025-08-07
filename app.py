@@ -56,20 +56,7 @@ if st.sidebar.button("Predict Loan Status"):
 
 # 🎨 Set clean banking-themed background
 
-   st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url("https://img.freepik.com/free-photo/top-view-finances-elements-arrangement-with-copy-space_23-2148793719.jpg?ga=GA1.1.806108855.1754501801&semt=ais_incoming&w=740&q=80"); /* You can replace this with any direct image link */
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+  
 
 # Convert numerical inputs for display
 gender_text = "Male" if gender == 1 else "Female"
@@ -162,6 +149,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
