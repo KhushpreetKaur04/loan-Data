@@ -9,7 +9,7 @@ model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
 # ✅ Set background image (Update the URL below with your own image link)
-background_image_url = "https://tse3.mm.bing.net/th/id/OIP.DHFgahV0z6v_w8S2OdzszwHaHa?r=0&cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3"  # <-- Replace with your image URL
+background_image_url = "https://images.pexels.com/photos/50987/money-card-business-credit-card-50987.jpeg"  # <-- Replace with your image URL
 page_bg_img = f'''
 <style>
 .stApp {{
@@ -153,6 +153,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
