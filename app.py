@@ -11,8 +11,7 @@ scaler = joblib.load('scaler.pkl')
 page_bg_img = '''
 <style>
 .stApp {
-    background-image: url("https://www.freepik.com/premium-photo/high-angle-view-heart-shape-table_121758696.htm#fromView=search&page=1&position=5&uuid=4f11bd57-7b3d-4c68-9a6a-29b3651971f5&query=Website+Background+house+loan+theme");
-    background-size: cover;
+    background-image: url("https://www.freepik.com/free-photo/keyboard-with-keys-house-model-white-background_4831113.htm#fromView=search&page=1&position=0&uuid=8a3af63f-9aeb-4519-bf56-52c30ce919cd&query=Website+Background+house+loan+theme+jpeg+fromat");
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -159,6 +158,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
