@@ -8,17 +8,21 @@ import matplotlib.pyplot as plt
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
-page_bg_img = '''
+# ✅ Set background image (Update the URL below with your own image link)
+background_image_url = "https://images.unsplash.com/photo-1570129477492-45c003edd2be"  # <-- Replace with your image URL
+page_bg_img = f'''
 <style>
-.stApp {
-    background-image: url("https://www.freepik.com/free-photo/keyboard-with-keys-house-model-white-background_4831113.htm#fromView=search&page=1&position=0&uuid=8a3af63f-9aeb-4519-bf56-52c30ce919cd&query=Website+Background+house+loan+theme+jpeg+fromat");
+.stApp {{
+    background-image: url("{background_image_url}");
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-}
+}}
 </style>
 '''
 st.markdown(page_bg_img, unsafe_allow_html=True)
+
 st.title("🏦 Loan Approval Prediction App")
 
 # Sidebar form
@@ -62,11 +66,6 @@ if st.sidebar.button("Predict Loan Status"):
     st.success(result if prediction == 1 else "")
     st.error(result if prediction == 0 else "")
 
-
-
-
-  
-
 # Convert numerical inputs for display
 gender_text = "Male" if gender == 1 else "Female"
 region_text = ["Rural", "Semiurban", "Urban"][property_area]
@@ -107,18 +106,15 @@ if 'prediction' in locals():
     st.markdown("### 📋 Loan Approval Visual")
     if prediction == 1:
         st.success("Congratulations! Your loan is likely to be approved.")
-        st.image("https://cdn-icons-png.flaticon.com/512/845/845646.png", width=120)  # tick icon
+        st.image("https://cdn-icons-png.flaticon.com/512/845/845646.png", width=120)
     else:
         st.error("Sorry, your loan may not be approved.")
-        st.image("https://cdn-icons-png.flaticon.com/512/463/463612.png", width=120)  # cross icon
+        st.image("https://cdn-icons-png.flaticon.com/512/463/463612.png", width=120)
 
 from io import BytesIO
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image as RLImage
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.units import inch
-import base64
-import os
 
 # 📥 Generate PDF report after prediction
 if 'prediction' in locals():
@@ -146,7 +142,6 @@ if 'prediction' in locals():
         elements.append(Paragraph(f"<b>Loan Amount:</b> ₹{loan_amount_actual}", styles['Normal']))
         elements.append(Spacer(1, 12))
 
-        # Save PDF
         doc.build(elements)
         buffer.seek(0)
         return buffer
@@ -158,8 +153,6 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
-
-
 
 
 
