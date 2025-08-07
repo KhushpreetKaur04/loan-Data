@@ -55,25 +55,16 @@ if st.sidebar.button("Predict Loan Status"):
 # ----------------- Visual Section -----------------
 
 # 🎨 Set clean banking-themed background
-st.markdown(
+
+   st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("");
-        background-attachment: fixed;
+        background-image: url("https://img.freepik.com/free-photo/top-view-finances-elements-arrangement-with-copy-space_23-2148793719.jpg?ga=GA1.1.806108855.1754501801&semt=ais_incoming&w=740&q=80"); /* You can replace this with any direct image link */
         background-size: cover;
         background-repeat: no-repeat;
+        background-attachment: fixed;
         background-position: center;
-    }
-    .highlight-box {
-        padding: 1rem;https://www.freepik.com/free-vector/futuristic-digital-rupee-money-concept-background_34426968.htm#fromView=keyword&page=1&position=28&uuid=1fe0b7eb-371b-4847-a8f1-7f76aae1f01c&query=Banking+Background.jpg")
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
     }
     </style>
     """,
@@ -171,6 +162,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
