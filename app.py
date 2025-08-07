@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
+page_bg_img = '''
 <style>
 .stApp {
-    background-image: url("https://www.freepik.com/free-vector/shiny-indian-rupee-digital-currency-background-with-circuit-lines_34426970.htm#fromView=search&page=1&position=32&uuid=a8d36a3a-51b0-431a-b286-902d6db8fcf0&query=Website+Background+bank+loan+theme");
+    background-image: url("https://www.freepik.com/premium-photo/high-angle-view-heart-shape-table_121758696.htm#fromView=search&page=1&position=5&uuid=4f11bd57-7b3d-4c68-9a6a-29b3651971f5&query=Website+Background+house+loan+theme");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -63,9 +64,7 @@ if st.sidebar.button("Predict Loan Status"):
     st.error(result if prediction == 0 else "")
 
 
-# ----------------- Visual Section -----------------
 
-# 🎨 Set clean banking-themed background
 
   
 
@@ -160,6 +159,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
