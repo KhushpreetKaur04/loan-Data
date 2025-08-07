@@ -8,6 +8,17 @@ import matplotlib.pyplot as plt
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
+<style>
+.stApp {
+    background-image: url("https://www.freepik.com/free-vector/shiny-indian-rupee-digital-currency-background-with-circuit-lines_34426970.htm#fromView=search&page=1&position=32&uuid=a8d36a3a-51b0-431a-b286-902d6db8fcf0&query=Website+Background+bank+loan+theme");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+</style>
+'''
+st.markdown(page_bg_img, unsafe_allow_html=True)
 st.title("🏦 Loan Approval Prediction App")
 
 # Sidebar form
@@ -149,6 +160,7 @@ if 'prediction' in locals():
         file_name="loan_prediction_report.pdf",
         mime="application/pdf"
     )
+
 
 
 
